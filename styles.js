@@ -21,7 +21,16 @@ const styles = StyleSheet.create({
     timePickers: {
         borderWidth: 1,
         flexDirection: 'row'
+    },
+
+
+    soundPickerContainer:{
+      text: '#000',
+    },
+    picker: {
+      fontSize: 10,
     }
+    
   });
 
 export default styles;

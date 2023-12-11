@@ -9,15 +9,19 @@ import ViewSelectSounds from './components/ViewSelectSounds';
 export default class App extends Component {
   state = {
     alertTime: '01:30',
-    sessionTime: '18:00'
+    sessionTime: '18:00',
+    selecetedAlertSongPath: 'r',
+    selecetedSessionSongPath: '',
   }
 
   render(){
     return (
       <View style={styles.container}>
         <StatusBar style="auto" />
-        <ViewInputTimes state={this.state}/>
-        <ViewSelectSounds state={this.state}/>
+        {/* <ViewInputTimes state={this.state}/>
+        <ViewSelectSounds state={this.state}/> */}
+        
+
       </View>
     );
   }
