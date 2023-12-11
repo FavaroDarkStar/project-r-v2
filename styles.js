@@ -8,19 +8,24 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: "#d2e7f8",
       alignItems: "center",
-      justifyContent: "center"
+    },
+    timePickers: {
+      borderWidth: 1,
+      flexDirection: 'row',
+      marginTop: 10,
+      justifyContent: 'space-between',
+      width: screen.width
+    },
+    timeInput: {
+      width: screen.width/2
     },
 
+
     timeInputTime:{
-        borderWidth: 1,
         textAlign:'center'
     },
     labelInputTime: {
         textAlign:'center'
-    },
-    timePickers: {
-        borderWidth: 1,
-        flexDirection: 'row'
     },
 
 

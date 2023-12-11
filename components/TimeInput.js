@@ -16,7 +16,7 @@ const TimeInput = (props) =>{
         console.log('sessionTime: ' + this.state.sessionTime);
     }
     return (
-        <View>
+        <View style={styles.timeInput}>
             <Text style={styles.labelInputTime}>{props.label}</Text>
             <TextInputMask 
                 style={styles.timeInputTime}
