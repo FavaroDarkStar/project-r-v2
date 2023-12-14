@@ -9,32 +9,12 @@ const styles = StyleSheet.create({
       backgroundColor: "#d2e7f8",
       alignItems: "center",
     },
-    timePickers: {
-      borderWidth: 1,
-      flexDirection: 'row',
-      marginTop: 10,
-      justifyContent: 'space-between',
-      width: screen.width
-    },
-    timeInput: {
-      width: screen.width/2
-    },
-
-
-    timeInputTime:{
-        textAlign:'center'
-    },
-    labelInputTime: {
-        textAlign:'center'
-    },
-
-
     soundPickerContainer:{
       text: '#000',
     },
     picker: {
       fontSize: 10,
-    }
+    },
     
   });
 

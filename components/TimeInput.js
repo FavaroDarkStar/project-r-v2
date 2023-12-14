@@ -1,25 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import styles from '../styles';
+import { Text, View, StyleSheet } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import React, {Component} from "react";
+
+
+const styles = StyleSheet.create({
+  timeInput:{
+  },
+  timeInputTime:{
+    justifyContent: 'center',
+    alignContent: 'center'
+  },
+  valueInputTime:{
+    textAlign: 'center'
+  }
+});
+
 
 const TimeInput = (props) =>{
     state = props.thisState
 
     handleAlertTimeChange = text => {
         this.state.alertTime = text;
-        console.log('alertTime: ' + this.state.alertTime);
     }
     handleSessionTimeChange = text => {
         this.state.sessionTime = text;
-        console.log('sessionTime: ' + this.state.sessionTime);
     }
     return (
         <View style={styles.timeInput}>
             <Text style={styles.labelInputTime}>{props.label}</Text>
             <TextInputMask 
-                style={styles.timeInputTime}
+                style={styles.valueInputTime}
                 type={'datetime'}
                 options={{
                 format: 'HH:mm',

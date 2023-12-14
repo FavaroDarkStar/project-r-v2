@@ -1,9 +1,11 @@
-import { Text, TextInput, Touchable, View, TouchableOpacity } from 'react-native';
+import { Text, TextInput, Touchable, View, TouchableOpacity, StatusBar } from 'react-native';
 import React, {Component, useState} from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import styles from './styles';
-import ViewInputTimes from './components/ViewInputTimes';
-import ViewSelectSounds from './components/ViewSelectSounds';
+import homeScreenStyles from './styles/homeScreenStyles';
+import timerScreenStyles from './styles/timerScreenStyles'
+
 import HomeScreen from './components/HomeScreen';
 import TimeInput from './components/TimeInput';
 
@@ -37,15 +39,11 @@ export default class App extends Component {
 
   interval = null
   
-  
-
   start = () => {
-    alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
-    sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
-    console.log(`alertTimeToSeconds: ${alertTimeToSeconds}`)
-    console.log(`sessionTimeToSeconds: ${sessionTimeToSeconds}`)
+    let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
+    let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
     // this.playsound();
-    this.setState(state => ({
+    this.setState(({
       alertRemainingSeconds: alertTimeToSeconds,
       sessionRemainingSeconds: sessionTimeToSeconds,
       isRunning: true
@@ -55,26 +53,24 @@ export default class App extends Component {
         alertRemainingSeconds: state.alertRemainingSeconds - 1 < 0 ? alertTimeToSeconds: state.alertRemainingSeconds - 1,
         sessionRemainingSeconds: state.sessionRemainingSeconds - 1 
       }));
-      console.log('COLOCAR PLAYSINO AQUI')
+      // TODO COLOCAR PLAYSINO AQUI
     }, 1000);
   }
 
+
   stop = () => {
+    let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
+    let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
     clearInterval(this.interval);
     this.interval = null;
     this.setState({
-      alertRemainingSeconds: this.timeToSeconds(this.alertTime),
-      sessionRemainingSeconds: this.timeToSeconds(this.sessionTime),
+      alertRemainingSeconds: alertTimeToSeconds,
+      sessionRemainingSeconds: sessionTimeToSeconds,
       isRunning: false
     });
-    this.stopsound()
+    // this.stopsound()
   } 
   
-  
-
-
-
-
   componentDidUpdate = (prevState) => {
     if(this.state.sessionRemainingSeconds === 0 && prevState.sessionRemainingSeconds !== 0){
       this.stop();
@@ -87,7 +83,6 @@ export default class App extends Component {
     }
   }
 
-
   render(){
     return (
       <View style={styles.container}>
@@ -97,9 +92,18 @@ export default class App extends Component {
             //TELA DO CRONOMETRO
             <>
               {/* <TimerScreen  /> */}
-              <View style={styles.timerScreen}>
-                <Text>{`${getRemaining(this.state.alertRemainingSeconds)}`}</Text>
-                <Text>{`${getRemaining(this.state.sessionRemainingSeconds)}`}</Text>
+              <View style={timerScreenStyles.container}>
+                <Text style={timerScreenStyles.sessionRemainingSecondsText}>{`${getRemaining(this.state.sessionRemainingSeconds)}`}</Text>
+
+                <View style={timerScreenStyles.stopButton}>
+                  <TouchableOpacity
+                    onPress={this.stop}
+                    style={timerScreenStyles.stopButton}
+                  >
+                    <Text style={timerScreenStyles.stopButtonText}>Parar</Text>
+                    <Text style={styles.alertRemainingSecondsText}>{`${getRemaining(this.state.alertRemainingSeconds)}`}</Text><Icon name="bell" size={30} color="#fff" />
+                  </TouchableOpacity>
+                </View>
               </View>
 
             </>
@@ -107,17 +111,27 @@ export default class App extends Component {
             //TELA INICIAL
             <>
               {/* <HomeScreen  /> */}
-              <View style={styles.timePickers}>
-                <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
-                <TimeInput thisState={this.state} label="Duração da sessão"/>
-              </View>
+              <View style={homeScreenStyles.container}>
+                <StatusBar barStyle={"light-content"} />
 
-              <View style={styles.startButton}>
-                <TouchableOpacity
-                  onPress={this.start}
-                >
-                  <Text style={styles.buttonText}>Começar</Text>
-                </TouchableOpacity>
+                {/* Inputs de tempo */}
+                <View style={homeScreenStyles.timeInputs}>
+                    <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
+                    <TimeInput thisState={this.state} label="Duração da sessão"/>
+                </View>
+
+
+                {/* Botão de começar */}
+                <View style={homeScreenStyles.startButton}>
+                    <TouchableOpacity
+                    onPress={this.start}
+                    style={homeScreenStyles.startButton}
+                    >
+                      <Text style={homeScreenStyles.startButtonText}>Começar</Text>
+                    </TouchableOpacity>
+                </View>
+
+
               </View>
             </>
           )
