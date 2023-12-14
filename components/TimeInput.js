@@ -36,7 +36,7 @@ const TimeInput = (props) =>{
                 format: 'HH:mm',
                 }}
                 value={props.type === 'alert' ? this.state.alertTime : this.state.sessionTime}
-                onChangeText={props.type === 'alert' ? this.handleAlertTimeChange : this.handleSessionTimeChange}//se props.try
+                onChangeText={props.type === 'alert' ? this.handleAlertTimeChange : this.handleSessionTimeChange}
             />
         </View>
     );

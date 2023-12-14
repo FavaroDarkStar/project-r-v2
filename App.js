@@ -1,6 +1,8 @@
 import { Text, TextInput, Touchable, View, TouchableOpacity, StatusBar } from 'react-native';
 import React, {Component, useState} from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Audio } from 'expo-av';
+import { Asset } from 'expo-asset';
 
 import styles from './styles';
 import homeScreenStyles from './styles/homeScreenStyles';
@@ -31,8 +33,8 @@ export default class App extends Component {
     isRunning: false,
     alertTime: '01:30',
     sessionTime: '18:00',
-    selectedAlertSongPath: '',
-    selectedSessionSongPath: '',
+    selectedAlertSongPath: './assets/alertSongs/alert1.mp3',
+    selectedSessionSongPath: './assets/sessionSongs/song1.mp3',
     alertRemainingSeconds: 90,
     sessionRemainingSeconds: 1080
   }
@@ -42,18 +44,20 @@ export default class App extends Component {
   start = () => {
     let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
     let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
-    // this.playsound();
+    this.playSoundSession();
     this.setState(({
       alertRemainingSeconds: alertTimeToSeconds,
       sessionRemainingSeconds: sessionTimeToSeconds,
       isRunning: true
     }));
     this.interval = setInterval(() => {
+      if (this.state.alertRemainingSeconds - 1 == 0){
+       this.replaySoundAlert()
+      }
       this.setState(state => ({
         alertRemainingSeconds: state.alertRemainingSeconds - 1 < 0 ? alertTimeToSeconds: state.alertRemainingSeconds - 1,
         sessionRemainingSeconds: state.sessionRemainingSeconds - 1 
       }));
-      // TODO COLOCAR PLAYSINO AQUI
     }, 1000);
   }
 
@@ -68,8 +72,54 @@ export default class App extends Component {
       sessionRemainingSeconds: sessionTimeToSeconds,
       isRunning: false
     });
-    // this.stopsound()
+    this.stopSoundSession()
   } 
+
+  //Ao carregar compentente configura e setta os sons
+  async componentDidMount(){ 
+    //Setta configurações do Audio
+    Audio.setAudioModeAsync({
+      shouldDuckAndroid: true,
+      staysActiveInBackground: true,
+      playThroughEarpieceAndroid: true
+    });
+
+    //Instancia os sons
+    this.soundAlert = new Audio.Sound();
+    this.soundSession = new Audio.Sound();
+
+    //Define configurações dos sons
+    
+    const statusAlert = {
+      shouldPlay: false,
+      isLooping: false,
+    };
+
+    const statusSession = {
+      shouldPlay: false,
+      isLooping: true,
+    };
+
+
+    //Carrega os sons
+    await this.soundAlert.loadAsync(require('./assets/alertSongs/alert1.mp3'), statusAlert, false);
+    await this.soundSession.loadAsync(require('./assets/sessionSongs/som1.mp3'), statusSession, false);    
+  }
+
+  //Função para tocar o som da sessão
+  playSoundSession(){  
+    this.soundSession.playAsync();
+  }
+  //Função para parar o som da sessão
+  stopSoundSession(){  
+    this.soundSession.stopAsync();
+  }
+
+  //Função para tocar o replay do som do alerta
+  replaySoundAlert(){  
+    this.soundAlert.replayAsync();
+  }
+
   
   componentDidUpdate = (prevState) => {
     if(this.state.sessionRemainingSeconds === 0 && prevState.sessionRemainingSeconds !== 0){
