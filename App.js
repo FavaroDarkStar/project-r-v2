@@ -10,6 +10,7 @@ import timerScreenStyles from './styles/timerScreenStyles'
 
 import HomeScreen from './components/HomeScreen';
 import TimeInput from './components/TimeInput';
+import SoundPicker from './components/SoundPicker';
 
 //retorna o numero formatado com duas casas
 function formatNumber(number) {
@@ -33,50 +34,16 @@ export default class App extends Component {
     isRunning: false,
     alertTime: '01:30',
     sessionTime: '18:00',
-    selectedAlertSongPath: './assets/alertSongs/alert1.mp3',
-    selectedSessionSongPath: './assets/sessionSongs/song1.mp3',
+    selectedAlertSongPath: 'alert1',
+    selectedSessionSongPath: 'song1',
     alertRemainingSeconds: 90,
     sessionRemainingSeconds: 1080
   }
 
   interval = null
-  
-  start = () => {
-    let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
-    let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
-    this.playSoundSession();
-    this.setState(({
-      alertRemainingSeconds: alertTimeToSeconds,
-      sessionRemainingSeconds: sessionTimeToSeconds,
-      isRunning: true
-    }));
-    this.interval = setInterval(() => {
-      if (this.state.alertRemainingSeconds - 1 == 0){
-       this.replaySoundAlert()
-      }
-      this.setState(state => ({
-        alertRemainingSeconds: state.alertRemainingSeconds - 1 < 0 ? alertTimeToSeconds: state.alertRemainingSeconds - 1,
-        sessionRemainingSeconds: state.sessionRemainingSeconds - 1 
-      }));
-    }, 1000);
-  }
-
-
-  stop = () => {
-    let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
-    let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
-    clearInterval(this.interval);
-    this.interval = null;
-    this.setState({
-      alertRemainingSeconds: alertTimeToSeconds,
-      sessionRemainingSeconds: sessionTimeToSeconds,
-      isRunning: false
-    });
-    this.stopSoundSession()
-  } 
 
   //Ao carregar compentente configura e setta os sons
-  async componentDidMount(){ 
+  async setLoadSounds(){ 
     //Setta configurações do Audio
     Audio.setAudioModeAsync({
       shouldDuckAndroid: true,
@@ -89,21 +56,65 @@ export default class App extends Component {
     this.soundSession = new Audio.Sound();
 
     //Define configurações dos sons
-    
     const statusAlert = {
       shouldPlay: false,
       isLooping: false,
     };
-
     const statusSession = {
       shouldPlay: false,
       isLooping: true,
     };
 
-
     //Carrega os sons
-    await this.soundAlert.loadAsync(require('./assets/alertSongs/alert1.mp3'), statusAlert, false);
-    await this.soundSession.loadAsync(require('./assets/sessionSongs/som1.mp3'), statusSession, false);    
+    //TODO CONTINUAR DAQUI TEM QUE DAR UM JEITO DE SETTAR ESSE REQUIRE COM VARIAVEL
+    switch(this.state.selectedAlertSongPath){
+      case 'alert1':
+        await this.soundAlert.unloadAsync();
+        await this.soundAlert.loadAsync(require('./assets/alertSongs/alert1.mp3'), statusAlert, false);
+        break;
+      case 'alert2':
+        await this.soundAlert.unloadAsync();
+        await this.soundAlert.loadAsync(require('./assets/alertSongs/alert2.mp3'), statusAlert, false);
+        break;
+      case 'alert3':
+        await this.soundAlert.unloadAsync();
+        await this.soundAlert.loadAsync(require('./assets/alertSongs/alert3.mp3'), statusAlert, false);
+        break;
+      case 'alert4':
+        await this.soundAlert.unloadAsync();
+        await this.soundAlert.loadAsync(require('./assets/alertSongs/alert4.mp3'), statusAlert, false);
+        break;
+      case 'alert5':
+        await this.soundAlert.unloadAsync();
+        await this.soundAlert.loadAsync(require('./assets/alertSongs/alert5.mp3'), statusAlert, false);
+        break;
+      //TODO QUANDO IMPLEMENTAR A OPÇÃO DO USUÁRIO SELECIONAR O AUDIO TRATAR O CARREGAMENTO DO ARQUIVO AQUI
+      // case 'customSound':
+      //   await this.soundAlert.loadAsync(require('./assets/alertSongs/customSound.mp3'), statusAlert, false);
+      //   break;
+    }
+    switch(this.state.selectedSessionSongPath){
+      case 'song1':
+        await this.soundSession.unloadAsync();
+        await this.soundSession.loadAsync(require('./assets/sessionSongs/song1.mp3'), statusSession, false);
+        break;
+      case 'song2':
+        await this.soundSession.unloadAsync();
+        await this.soundSession.loadAsync(require('./assets/sessionSongs/song2.mp3'), statusSession, false);
+        break;
+      case 'song3':
+        await this.soundSession.unloadAsync();
+        await this.soundSession.loadAsync(require('./assets/sessionSongs/song3.mp3'), statusSession, false);
+        break;
+      default:
+          console.log(`erro selectedSessionSongPath: ${this.soundSession.unloadAsync}`)
+          break;
+      
+      //TODO QUANDO IMPLEMENTAR A OPÇÃO DO USUÁRIO SELECIONAR O AUDIO TRATAR O CARREGAMENTO DO ARQUIVO AQUI
+      // case 'customSound':
+      //   await this.soundAlert.loadAsync(require('./assets/alertSongs/customSound.mp3'), statusAlert, false);
+      //   break;
+    } 
   }
 
   //Função para tocar o som da sessão
@@ -120,6 +131,47 @@ export default class App extends Component {
     this.soundAlert.replayAsync();
   }
 
+  //Função para parar o som do alerta
+  stopSoundAlert(){  
+    this.soundAlert.stopAsync();
+  }
+  
+  start = async() => {    
+    let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
+    let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
+    await this.setLoadSounds();
+    this.playSoundSession();
+    this.setState(({
+      alertRemainingSeconds: alertTimeToSeconds,
+      sessionRemainingSeconds: sessionTimeToSeconds,
+      isRunning: true
+    }));
+    this.interval = setInterval(() => {
+      if (this.state.alertRemainingSeconds - 1 == 1){
+       this.replaySoundAlert()
+      }
+      this.setState(state => ({
+        alertRemainingSeconds: state.alertRemainingSeconds - 1 == 0 ? alertTimeToSeconds: state.alertRemainingSeconds - 1,
+        sessionRemainingSeconds: state.sessionRemainingSeconds - 1 
+      }));
+    }, 1000);
+  }
+
+  stop = () => {
+    let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
+    let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
+    clearInterval(this.interval);
+    this.interval = null;
+    this.setState({
+      alertRemainingSeconds: alertTimeToSeconds,
+      sessionRemainingSeconds: sessionTimeToSeconds,
+      isRunning: false
+    });
+    this.stopSoundSession()
+    this.stopSoundAlert()
+  } 
+
+  
   
   componentDidUpdate = (prevState) => {
     if(this.state.sessionRemainingSeconds === 0 && prevState.sessionRemainingSeconds !== 0){
@@ -134,6 +186,10 @@ export default class App extends Component {
   }
 
   render(){
+    const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
+                        { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },{ label: 'Custom Sound', value: 'customSound' },];
+    const sessionSoundOptions=[{ label: 'Som 1', value: 'song1' }, { label: 'Som 2', value: 'song2' }, { label: 'Som 3', value: 'song3' },];
+
     return (
       <View style={styles.container}>
 
@@ -168,6 +224,12 @@ export default class App extends Component {
                 <View style={homeScreenStyles.timeInputs}>
                     <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
                     <TimeInput thisState={this.state} label="Duração da sessão"/>
+                </View>
+
+                {/* Picker de som */}
+                <View style={homeScreenStyles.soundPickers}>
+                  <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
+                  <SoundPicker label="Som da sessão" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
                 </View>
 
 
