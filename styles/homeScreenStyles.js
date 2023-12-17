@@ -19,7 +19,6 @@ const homeScreenStyles = StyleSheet.create({
     soundPickers: {
       borderWidth: 1,
       flexDirection: 'row',
-      marginTop: 10,
       justifyContent: 'space-between',
       width: screen.width
     },
@@ -27,6 +26,15 @@ const homeScreenStyles = StyleSheet.create({
       //TODO ESTILIZAR PICKER
       width: screen.width/2
     },
+    volumeSliders: {
+      borderWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: screen.width
+    },
+
+
+
     startButton: {
       //TODO ESTILIZAR O BOTÃO DE COMEÇAR
       borderWidth: 10,

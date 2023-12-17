@@ -1,9 +1,9 @@
-import { Text, TextInput, Touchable, View, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, StatusBar } from 'react-native';
 import React, {Component, useState} from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
-
+import Slider from '@react-native-community/slider';
 import styles from './styles';
 import homeScreenStyles from './styles/homeScreenStyles';
 import timerScreenStyles from './styles/timerScreenStyles'
@@ -11,6 +11,7 @@ import timerScreenStyles from './styles/timerScreenStyles'
 import HomeScreen from './components/HomeScreen';
 import TimeInput from './components/TimeInput';
 import SoundPicker from './components/SoundPicker';
+import VolumeSlider from './components/VolumeSlider';
 
 //retorna o numero formatado com duas casas
 function formatNumber(number) {
@@ -42,6 +43,9 @@ export default class App extends Component {
 
   interval = null
 
+  volumeAlert = 1;
+  volumeSession = 1;
+
   //Ao carregar compentente configura e setta os sons
   async setLoadSounds(){ 
     //Setta configurações do Audio
@@ -54,7 +58,6 @@ export default class App extends Component {
     //Instancia os sons
     this.soundAlert = new Audio.Sound();
     this.soundSession = new Audio.Sound();
-
     //Define configurações dos sons
     const statusAlert = {
       shouldPlay: false,
@@ -105,11 +108,7 @@ export default class App extends Component {
       case 'song3':
         await this.soundSession.unloadAsync();
         await this.soundSession.loadAsync(require('./assets/sessionSongs/song3.mp3'), statusSession, false);
-        break;
-      default:
-          console.log(`erro selectedSessionSongPath: ${this.soundSession.unloadAsync}`)
-          break;
-      
+        break;      
       //TODO QUANDO IMPLEMENTAR A OPÇÃO DO USUÁRIO SELECIONAR O AUDIO TRATAR O CARREGAMENTO DO ARQUIVO AQUI
       // case 'customSound':
       //   await this.soundAlert.loadAsync(require('./assets/alertSongs/customSound.mp3'), statusAlert, false);
@@ -117,23 +116,25 @@ export default class App extends Component {
     } 
   }
 
-  //Função para tocar o som da sessão
-  playSoundSession(){  
-    this.soundSession.playAsync();
-  }
-  //Função para parar o som da sessão
-  stopSoundSession(){  
-    this.soundSession.stopAsync();
-  }
-
   //Função para tocar o replay do som do alerta
-  replaySoundAlert(){  
+  replaySoundAlert(){ 
+    this.soundAlert.setVolumeAsync(parseFloat(this.volumeAlert.toFixed(1)))
     this.soundAlert.replayAsync();
   }
 
   //Função para parar o som do alerta
   stopSoundAlert(){  
     this.soundAlert.stopAsync();
+  }
+
+  //Função para tocar o som da sessão
+  playSoundSession(){
+    this.soundSession.setVolumeAsync(parseFloat(this.volumeSession.toFixed(1)));
+    this.soundSession.playAsync();
+  }
+  //Função para parar o som da sessão
+  stopSoundSession(){  
+    this.soundSession.stopAsync();
   }
   
   start = async() => {    
@@ -171,7 +172,13 @@ export default class App extends Component {
     this.stopSoundAlert()
   } 
 
-  
+  setVolumeAlert = async (value) => {
+    this.volumeAlert = value;
+  };
+
+  setVolumeSession = async (value) => {
+    this.volumeSession = value;
+  };
   
   componentDidUpdate = (prevState) => {
     if(this.state.sessionRemainingSeconds === 0 && prevState.sessionRemainingSeconds !== 0){
@@ -190,6 +197,7 @@ export default class App extends Component {
                         { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },{ label: 'Custom Sound', value: 'customSound' },];
     const sessionSoundOptions=[{ label: 'Som 1', value: 'song1' }, { label: 'Som 2', value: 'song2' }, { label: 'Som 3', value: 'song3' },];
 
+    
     return (
       <View style={styles.container}>
 
@@ -211,7 +219,6 @@ export default class App extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-
             </>
           ) : (
             //TELA INICIAL
@@ -226,12 +233,18 @@ export default class App extends Component {
                     <TimeInput thisState={this.state} label="Duração da sessão"/>
                 </View>
 
-                {/* Picker de som */}
+                {/* Pickers de som */}
                 <View style={homeScreenStyles.soundPickers}>
                   <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
                   <SoundPicker label="Som da sessão" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
                 </View>
 
+                {/* Slider volume */}
+                <View style={homeScreenStyles.volumeSliders}>
+                  <VolumeSlider value={this.volumeAlert} onValueChange={this.setVolumeAlert}/>
+                  <VolumeSlider value={this.volumeSession} onValueChange={this.setVolumeSession}/>
+                </View>
+                
 
                 {/* Botão de começar */}
                 <View style={homeScreenStyles.startButton}>
