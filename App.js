@@ -1,17 +1,20 @@
-import { Text, TextInput, View, TouchableOpacity, StatusBar } from 'react-native';
-import React, {Component, useState} from "react";
+import { Text, View, TouchableOpacity, StatusBar } from 'react-native';
+import React, {Component,} from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Audio } from 'expo-av';
-import { Asset } from 'expo-asset';
-import Slider from '@react-native-community/slider';
 import styles from './styles';
 import homeScreenStyles from './styles/homeScreenStyles';
+
+
 import timerScreenStyles from './styles/timerScreenStyles'
 
-import HomeScreen from './components/HomeScreen';
 import TimeInput from './components/TimeInput';
 import SoundPicker from './components/SoundPicker';
 import VolumeSlider from './components/VolumeSlider';
+
+
+import { useFonts } from 'expo-font';
+
 
 //retorna o numero formatado com duas casas
 function formatNumber(number) {
@@ -30,6 +33,7 @@ function timeToSeconds(time) {
   return (parseInt((time).split(':')[0]) * 60) + parseInt((time.split(':')[1]))
 }
 
+
 export default class App extends Component {
   state = {
     isRunning: false,
@@ -45,6 +49,8 @@ export default class App extends Component {
 
   volumeAlert = 1;
   volumeSession = 1;
+
+  
 
   //Ao carregar compentente configura e setta os sons
   async setLoadSounds(){ 
@@ -69,7 +75,6 @@ export default class App extends Component {
     };
 
     //Carrega os sons
-    //TODO CONTINUAR DAQUI TEM QUE DAR UM JEITO DE SETTAR ESSE REQUIRE COM VARIAVEL
     switch(this.state.selectedAlertSongPath){
       case 'alert1':
         await this.soundAlert.unloadAsync();
@@ -137,6 +142,7 @@ export default class App extends Component {
     this.soundSession.stopAsync();
   }
   
+  //Função para iniciar a sessão
   start = async() => {    
     let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
     let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
@@ -157,7 +163,7 @@ export default class App extends Component {
       }));
     }, 1000);
   }
-
+  //Função para parar a sessão
   stop = () => {
     let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
     let sessionTimeToSeconds = timeToSeconds(this.state.sessionTime);
@@ -171,11 +177,11 @@ export default class App extends Component {
     this.stopSoundSession()
     this.stopSoundAlert()
   } 
-
+  //Função settar o volume do alerta
   setVolumeAlert = async (value) => {
     this.volumeAlert = value;
   };
-
+  //Função settar o volume da sessao
   setVolumeSession = async (value) => {
     this.volumeSession = value;
   };
@@ -192,12 +198,15 @@ export default class App extends Component {
     }
   }
 
+
+
+
   render(){
     const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
-                        { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },{ label: 'Custom Sound', value: 'customSound' },];
+                        { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];
     const sessionSoundOptions=[{ label: 'Som 1', value: 'song1' }, { label: 'Som 2', value: 'song2' }, { label: 'Som 3', value: 'song3' },];
 
-    
+   
     return (
       <View style={styles.container}>
 
@@ -225,29 +234,30 @@ export default class App extends Component {
             <>
               {/* <HomeScreen  /> */}
               <View style={homeScreenStyles.container}>
-                <StatusBar barStyle={"light-content"} />
+                <StatusBar barStyle={"light-content"} />               
 
-                {/* Inputs de tempo */}
-                <View style={homeScreenStyles.timeInputs}>
-                    <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
-                    <TimeInput thisState={this.state} label="Duração da sessão"/>
-                </View>
-
-                {/* Pickers de som */}
-                <View style={homeScreenStyles.soundPickers}>
+              <View style={homeScreenStyles.cols}>
+                
+                {/* Coluna da esquerda */}
+                <View style={homeScreenStyles.leftCol}>
+                  <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
                   <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
-                  <SoundPicker label="Som da sessão" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
+                  <VolumeSlider value={this.volumeAlert} onValueChange={this.setVolumeAlert}/>
                 </View>
 
-                {/* Slider volume */}
-                <View style={homeScreenStyles.volumeSliders}>
-                  <VolumeSlider value={this.volumeAlert} onValueChange={this.setVolumeAlert}/>
+                {/* Colune da direita */}
+                <View style={homeScreenStyles.rightCol}>
+                  <TimeInput thisState={this.state} label="Duração da sessão"/>
+                  <SoundPicker label="Som da sessão" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
                   <VolumeSlider value={this.volumeSession} onValueChange={this.setVolumeSession}/>
                 </View>
-                
+
+              </View>
+
+
 
                 {/* Botão de começar */}
-                <View style={homeScreenStyles.startButton}>
+                <View style={homeScreenStyles.startView}>
                     <TouchableOpacity
                     onPress={this.start}
                     style={homeScreenStyles.startButton}
@@ -257,6 +267,7 @@ export default class App extends Component {
                 </View>
 
 
+              
               </View>
             </>
           )

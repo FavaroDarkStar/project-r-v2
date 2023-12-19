@@ -1,23 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import React, {Component} from "react";
+import { useFonts } from 'expo-font';
+
+const screen = Dimensions.get("window");
+
+import OswaldBold from '../assets/fonts/Oswald-Bold.ttf';
+
+
 
 
 const styles = StyleSheet.create({
   timeInput:{
+    
   },
-  timeInputTime:{
-    justifyContent: 'center',
-    alignContent: 'center'
+  labelInputTime: {
+    textAlign: 'center',
+    fontSize: 25,
+    fontFamily: 'Oswald-Bold'
   },
   valueInputTime:{
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 20,
+    backgroundColor: "#d8eff3da", 
+    width: screen.width/2-20,
   }
 });
 
 
 const TimeInput = (props) =>{
+  const [loaded] = useFonts({
+    'Oswald-Bold': require('../assets/fonts/Oswald-Bold.ttf'),
+  });
+  if (!loaded) {
+    return null; // ou algum indicador de carregamento
+  }
+
+
+
     state = props.thisState
 
     handleAlertTimeChange = text => {
