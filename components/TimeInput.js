@@ -21,14 +21,14 @@ const styles = StyleSheet.create({
   textInputMask:{
     textAlign: 'center',
     fontSize: 20,
-    backgroundColor: "#d8eff3da", 
+    backgroundColor: '#e2fdffff', 
     width: screen.width/2-20,
     height: 50,
     borderRadius: 10,
     fontFamily: 'NunitoLight',
     marginTop:5,
     //sombras
-    shadowColor: "#000",
+    shadowColor: "#5fe8f1",
     shadowOffset: {
       width: 0,
       height: 7,

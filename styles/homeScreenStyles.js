@@ -7,7 +7,7 @@ const screen = Dimensions.get("window");
 const homeScreenStyles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#f0fcfbff",
+      backgroundColor: "#5fe7f11a",
       alignItems: "center",
       justifyContent: 'center'
     },

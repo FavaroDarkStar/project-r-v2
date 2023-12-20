@@ -29,7 +29,7 @@ const pickerStyles = StyleSheet.create({
   inputAndroid: {
     textAlign: 'center',
     fontSize: 20,
-    backgroundColor: "#d8eff3da", 
+    backgroundColor: '#e2fdffff', 
     width: screen.width/2-20,
     height: 50,
     borderRadius: 10,
@@ -37,7 +37,7 @@ const pickerStyles = StyleSheet.create({
     color: '#000000',
     marginTop:5,
     //sombras
-    shadowColor: "#000",
+    shadowColor: "#5fe8f1",
     shadowOffset: {
       width: 0,
       height: 7,
@@ -76,7 +76,7 @@ const SoundPicker = (props) => {
 
   return (
     
-    <View style={[styles.container, styles.boxShadow]}>
+    <View style={styles.container}>
       <Text style={styles.label}>{props.label}</Text>
         <RNPickerSelect
           value={selectedOption}
