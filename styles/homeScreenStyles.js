@@ -1,3 +1,4 @@
+import { useFonts } from "expo-font";
 import { StyleSheet, Dimensions } from "react-native";
 
 
@@ -6,7 +7,7 @@ const screen = Dimensions.get("window");
 const homeScreenStyles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#dbfffdff",
+      backgroundColor: "#f0fcfbff",
       alignItems: "center",
       justifyContent: 'center'
     },
@@ -17,7 +18,7 @@ const homeScreenStyles = StyleSheet.create({
     leftCol:{
       width: screen.width/2,
       alignItems: 'center',
-      alignContent: 'center'
+      alignContent: 'center',
     },
     rightCol:{
       width: screen.width/2,
@@ -40,6 +41,7 @@ const homeScreenStyles = StyleSheet.create({
     startButtonText: {
       //TODO TROCAR A FONTE
       fontSize: 40,
+      fontFamily: "NunitoMedium"
     },
     startView:{
       marginTop: 50

@@ -7,11 +7,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
     },
-    soundPickerContainer:{
-    },
-    picker: {
-      fontSize: 10,
-    },
     
   });
 

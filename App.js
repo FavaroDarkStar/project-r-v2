@@ -1,10 +1,9 @@
 import { Text, View, TouchableOpacity, StatusBar } from 'react-native';
-import React, {Component,} from "react";
+import React, {Component, useState, useEffect} from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Audio } from 'expo-av';
 import styles from './styles';
 import homeScreenStyles from './styles/homeScreenStyles';
-
 
 import timerScreenStyles from './styles/timerScreenStyles'
 
@@ -12,8 +11,8 @@ import TimeInput from './components/TimeInput';
 import SoundPicker from './components/SoundPicker';
 import VolumeSlider from './components/VolumeSlider';
 
-
 import { useFonts } from 'expo-font';
+import Button from './components/Button';
 
 
 //retorna o numero formatado com duas casas
@@ -35,6 +34,9 @@ function timeToSeconds(time) {
 
 
 export default class App extends Component {
+
+  
+
   state = {
     isRunning: false,
     alertTime: '01:30',
@@ -198,82 +200,78 @@ export default class App extends Component {
     }
   }
 
-
-
-
+  
+  loadFonts() { 
+    let [fontsLoaded] = useFonts({
+      'NunitoMedium': require('./assets/fonts/Nunito-Medium.ttf'),
+      'NunitoBold': require('./assets/fonts/Nunito-Bold.ttf'),
+    });
+    if (!fontsLoaded) {
+      return null;
+    }
+  }
   render(){
     const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
                         { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];
     const sessionSoundOptions=[{ label: 'Som 1', value: 'song1' }, { label: 'Som 2', value: 'song2' }, { label: 'Som 3', value: 'song3' },];
 
-   
     return (
-      <View style={styles.container}>
+ 
+        <View style={styles.container} >
+          
+          {
+            this.state.isRunning ? (
+              //TELA DO CRONOMETRO
+              <>
+                {/* <TimerScreen  /> */}
+                <View style={timerScreenStyles.container}>
+                  <Text style={timerScreenStyles.sessionRemainingSecondsText}>{`${getRemaining(this.state.sessionRemainingSeconds)}`}</Text>
 
-        {
-          this.state.isRunning ? (
-            //TELA DO CRONOMETRO
-            <>
-              {/* <TimerScreen  /> */}
-              <View style={timerScreenStyles.container}>
-                <Text style={timerScreenStyles.sessionRemainingSecondsText}>{`${getRemaining(this.state.sessionRemainingSeconds)}`}</Text>
-
-                <View style={timerScreenStyles.stopButton}>
-                  <TouchableOpacity
-                    onPress={this.stop}
-                    style={timerScreenStyles.stopButton}
-                  >
-                    <Text style={timerScreenStyles.stopButtonText}>Parar</Text>
-                    <Text style={styles.alertRemainingSecondsText}>{`${getRemaining(this.state.alertRemainingSeconds)}`}</Text><Icon name="bell" size={30} color="#fff" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </>
-          ) : (
-            //TELA INICIAL
-            <>
-              {/* <HomeScreen  /> */}
-              <View style={homeScreenStyles.container}>
-                <StatusBar barStyle={"light-content"} />               
-
-              <View style={homeScreenStyles.cols}>
-                
-                {/* Coluna da esquerda */}
-                <View style={homeScreenStyles.leftCol}>
-                  <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
-                  <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
-                  <VolumeSlider value={this.volumeAlert} onValueChange={this.setVolumeAlert}/>
-                </View>
-
-                {/* Colune da direita */}
-                <View style={homeScreenStyles.rightCol}>
-                  <TimeInput thisState={this.state} label="Duração da sessão"/>
-                  <SoundPicker label="Som da sessão" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
-                  <VolumeSlider value={this.volumeSession} onValueChange={this.setVolumeSession}/>
-                </View>
-
-              </View>
-
-
-
-                {/* Botão de começar */}
-                <View style={homeScreenStyles.startView}>
+                  <View style={timerScreenStyles.stopButton}>
                     <TouchableOpacity
-                    onPress={this.start}
-                    style={homeScreenStyles.startButton}
+                      onPress={this.stop}
+                      style={timerScreenStyles.stopButton}
                     >
-                      <Text style={homeScreenStyles.startButtonText}>Começar</Text>
+                      <Text style={timerScreenStyles.stopButtonText}>Parar</Text>
+                      <Text style={styles.alertRemainingSecondsText}>{`${getRemaining(this.state.alertRemainingSeconds)}`}</Text><Icon name="bell" size={30} color="#fff" />
                     </TouchableOpacity>
+                  </View>
                 </View>
+              </>
+            ) : (
+              //TELA INICIAL
+              <>
+                {/* <HomeScreen  /> */}
+                <View style={homeScreenStyles.container}>
+                  <StatusBar barStyle={"light-content"} />               
+                  <View style={homeScreenStyles.cols}>
+                    
+                    {/* Coluna da esquerda */}
+                    <View style={homeScreenStyles.leftCol}>
+                      <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
+                      <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
+                      <VolumeSlider label="Volume do alerta" value={this.volumeAlert} onValueChange={this.setVolumeAlert}/>
+                    </View>
+                    {/* Colune da direita */}
+                    <View style={homeScreenStyles.rightCol}>
+                      <TimeInput thisState={this.state} label="Tempo total"/>
+                      <SoundPicker label="Música" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
+                      <VolumeSlider label="Volume da música" value={this.volumeSession} onValueChange={this.setVolumeSession}/>
+                    </View>
+                  </View>
 
 
-              
-              </View>
-            </>
-          )
-        }
+                  {/* Botão de começar */}
+                  <Button buttonText={'Começar'} onPress={this.start} />
 
-      </View>
+
+                
+                </View>
+              </>
+            )
+          }
+
+        </View>
     );
   }
 }
