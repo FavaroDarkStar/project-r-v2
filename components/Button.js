@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
       alignItems: "center",
       alignContent: 'center',
       justifyContent: "center",
-      backgroundColor: "#b8f1f5ff",
-      borderWidth: 5,
-      borderColor: '#b8f1f5f8',      
+      backgroundColor: "#94e7ff",
+      borderWidth: 1,
+      borderColor: '#40cfff',      
   },
   shadowBox: {
-    shadowColor: "#5fe8f1",
+    shadowColor: "#40cfff",
     shadowOffset: {
       width: 0,
       height: 7,
@@ -50,8 +50,8 @@ const Button = (props) =>{
             style={[styles.button, styles.shadowBox]}
           >
             {props.type=='start' ?
-              <Icon name="play" size={140} color="#5fe7f1a1" style={{ position: 'absolute', right: ((screen.width/2)-140)/2 }}/> :// ((tamanho da tela/2)-comprimento do icone)/2 
-              <Icon name="stop" size={130} color="#5fe7f1a1" />
+              <Icon name="play" size={140} color="#cdffff" style={{ position: 'absolute', right: ((screen.width/2)-140)/2 }}/> :// ((tamanho da tela/2)-comprimento do icone)/2 
+              <Icon name="stop" size={130} color="#cdffff" />
             }
           </TouchableOpacity>
         </View>

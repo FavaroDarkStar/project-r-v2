@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     fontFamily: 'NunitoBold',
-    color: "#5fe7f1ff"
+    color: "#40cfff"
   },
   boxShadow: {
 
@@ -30,7 +30,7 @@ const pickerStyles = StyleSheet.create({
   inputAndroid: {
     textAlign: 'center',
     fontSize: 20,
-    backgroundColor: '#e2fdffff', 
+    backgroundColor: '#cfffff', 
     width: screen.width/2-20,
     height: 50,
     borderRadius: 10,

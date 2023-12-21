@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
       borderRadius: screen.width / 2,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#b8f1f5ff",
+      backgroundColor: "#94e7ff",
       borderWidth: 5,
-      borderColor: '#b8f1f5f8',
+      borderColor: '#40cfff',
 
 
     },
     shadowBox:{
-        shadowColor: "#5fe8f1",
+        shadowColor: "#40cfff",
         shadowOffset: {
           width: 0,
           height: 7,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     sessionRemainingSecondsText:{
         textAlign: 'center',
         fontSize: 30,
-        backgroundColor: '#e2fdffff', 
+        backgroundColor: '#cfffff', 
         width: screen.width/3,
         borderRadius: 10,
         fontFamily: 'NunitoLight',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alertRemainingSecondsText:{
         textAlign: 'center',
         fontSize: 20,
-        backgroundColor: '#e2fdffff', 
+        backgroundColor: '#cfffff', 
         width: screen.width/5,
         borderRadius: 10,
         fontFamily: 'NunitoLight',
@@ -96,9 +96,9 @@ const TimerScreen = (props) =>{
     return (
     <View style={styles.container}>
         <View style={styles.remainingSeconds}>
-            <Icon name="music" size={50} color="#5fe7f1a1" />
+            <Icon name="music" size={50} color="#40cfff" />
             <Text style={[styles.sessionRemainingSecondsText, styles.shadowBox]}>{`${getRemaining(props.thisState.sessionRemainingSeconds)}`}</Text>
-            <Icon name="bell" size={25} color="#5fe7f1a1"/>
+            <Icon name="bell" size={25} color="#40cfff"/>
             <Text style={[styles.alertRemainingSecondsText, styles.shadowBox]}>{`${getRemaining(props.thisState.alertRemainingSeconds)}`}</Text>
         </View>
 
@@ -108,11 +108,11 @@ const TimerScreen = (props) =>{
         
         <View style={styles.volumeSlidersContainer}>
             <View style={styles.volumeSlider}>
-                <Icon name="bell" size={30} color="#5fe7f1a1" />     
+                <Icon name="bell" size={30} color="#40cfff" />     
                 <VolumeSlider value={props.volumeAlert[0]} onVolumeValueChange={props.volumeAlert[1]}/>
             </View>
             <View style={styles.volumeSlider}>
-                <Icon name="music" size={30} color="#5fe7f1a1" />
+                <Icon name="music" size={30} color="#40cfff" />
                 <VolumeSlider value={props.volumeSession[0]} onVolumeValueChange={props.volumeSession[1]}/> 
             </View>
         </View>

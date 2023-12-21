@@ -8,15 +8,6 @@ const screen = Dimensions.get("window");
 const styles = StyleSheet.create({
   container:{
     marginTop: 15,
-    //sombras
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.43,
-    shadowRadius: 9.51,
-    elevation: 15,
   },
   slider:{
     width: screen.width/2-10, 
@@ -36,6 +27,8 @@ const VolumeSlider = (props) =>{
             step={0.01}
             value={props.value}
             onValueChange={props.onValueChange}
+            minimumTrackTintColor="#40cfff"
+            thumbTintColor="#94e7ff"
             />
         </View>
     );
