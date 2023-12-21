@@ -7,7 +7,7 @@ const screen = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container:{
-    marginTop: 10,
+    marginTop: 15,
     //sombras
     shadowColor: "#000",
     shadowOffset: {
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   },
   slider:{
     width: screen.width/2-10, 
-
   },
 
 });

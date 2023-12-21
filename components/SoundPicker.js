@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
   label:{
     textAlign: 'center',
     fontSize: 25,
-    fontFamily: 'NunitoMedium',
+    fontFamily: 'NunitoBold',
+    color: "#5fe7f1ff"
   },
   boxShadow: {
 
@@ -68,6 +69,7 @@ const SoundPicker = (props) => {
   let [fontsLoaded] = useFonts({
     'NunitoMedium': require('../assets/fonts/Nunito-Medium.ttf'),
     'NunitoLight': require('../assets/fonts/Nunito-Light.ttf'),
+    'NunitoBold': require('../assets/fonts/Nunito-Bold.ttf'),
   });
   if (!fontsLoaded) {
     return null
@@ -85,7 +87,7 @@ const SoundPicker = (props) => {
           items={soundOptions}
           useNativeAndroidPickerStyle={false}
           Icon={() => {
-            return <Icon name="caret-down" size={20} color="black" />;
+            return <Icon name="caret-down" size={20} color="black" style={{marginTop: 5}}/>;
           }}
           placeholder={{  }} 
         />

@@ -7,13 +7,14 @@ const screen = Dimensions.get("window");
 const homeScreenStyles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#5fe7f11a",
+      // backgroundColor: "#5fe7f11a",
       alignItems: "center",
       justifyContent: 'center'
     },
     cols:{
       flexDirection: 'row',
       justifyContent: 'space-between',
+      marginBottom: 80
     },
     leftCol:{
       width: screen.width/2,
