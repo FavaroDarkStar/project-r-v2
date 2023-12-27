@@ -35,13 +35,13 @@ export default class App extends Component {
     selectedAlertSongPath: 'alert1',
     selectedSessionSongPath: 'song1',
     alertRemainingSeconds: 90,
-    sessionRemainingSeconds: 1080
+    sessionRemainingSeconds: 1080,
+    volumeAlert: 1,
+    volumeSession: 1
   }
 
   interval = null
 
-  volumeAlert = 1;
-  volumeSession = 1;
 
   
 
@@ -89,10 +89,6 @@ export default class App extends Component {
         await this.soundAlert.unloadAsync();
         await this.soundAlert.loadAsync(require('./assets/alertSongs/alert5.mp3'), statusAlert, false);
         break;
-      //TODO QUANDO IMPLEMENTAR A OPÇÃO DO USUÁRIO SELECIONAR O AUDIO TRATAR O CARREGAMENTO DO ARQUIVO AQUI
-      // case 'customSound':
-      //   await this.soundAlert.loadAsync(require('./assets/alertSongs/customSound.mp3'), statusAlert, false);
-      //   break;
     }
     switch(this.state.selectedSessionSongPath){
       case 'song1':
@@ -106,17 +102,13 @@ export default class App extends Component {
       case 'song3':
         await this.soundSession.unloadAsync();
         await this.soundSession.loadAsync(require('./assets/sessionSongs/song3.mp3'), statusSession, false);
-        break;      
-      //TODO QUANDO IMPLEMENTAR A OPÇÃO DO USUÁRIO SELECIONAR O AUDIO TRATAR O CARREGAMENTO DO ARQUIVO AQUI
-      // case 'customSound':
-      //   await this.soundAlert.loadAsync(require('./assets/alertSongs/customSound.mp3'), statusAlert, false);
-      //   break;
+        break;     
     } 
   }
 
   //Função para tocar o replay do som do alerta
   replaySoundAlert(){ 
-    this.soundAlert.setVolumeAsync(parseFloat(this.volumeAlert.toFixed(1)))
+    this.soundAlert.setVolumeAsync(parseFloat(this.state.volumeAlert.toFixed(1)))
     this.soundAlert.replayAsync();
   }
 
@@ -127,7 +119,7 @@ export default class App extends Component {
 
   //Função para tocar o som da sessão
   playSoundSession(){
-    this.soundSession.setVolumeAsync(parseFloat(this.volumeSession.toFixed(1)));
+    this.soundSession.setVolumeAsync(parseFloat(this.state.volumeSession.toFixed(1)));
     this.soundSession.playAsync();
   }
   //Função para parar o som da sessão
@@ -172,11 +164,11 @@ export default class App extends Component {
   } 
   //Função settar o volume do alerta
   setVolumeAlert = async (value) => {
-    this.volumeAlert = value;
+    this.state.volumeAlert = value;
   };
   //Função settar o volume da sessao
   setVolumeSession = async (value) => {
-    this.volumeSession = value;
+    this.state.volumeSession = value;
   };
   
   componentDidUpdate = (prevState) => {
@@ -201,6 +193,7 @@ export default class App extends Component {
       return null;
     }
   }
+
   render(){
     const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
                         { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];
@@ -214,48 +207,32 @@ export default class App extends Component {
             this.state.isRunning ? (
               //TELA DO CRONOMETRO
               <>
-                <TimerScreen thisState={this.state} onPress={this.stop} volumeAlert={[this.volumeAlert,this.setVolumeAlert]} volumeSession={[this.volumeSession,this.setVolumeSession]}/>
-                {/* <View style={timerScreenStyles.container}>
-                  <Text style={timerScreenStyles.sessionRemainingSecondsText}>{`${getRemaining(this.state.sessionRemainingSeconds)}`}</Text>
-
-                  <View style={timerScreenStyles.stopButton}>
-                    <TouchableOpacity
-                      onPress={this.stop}
-                      style={timerScreenStyles.stopButton}
-                    >
-                      <Text style={timerScreenStyles.stopButtonText}>Parar</Text>
-                      <Text style={styles.alertRemainingSecondsText}>{`${getRemaining(this.state.alertRemainingSeconds)}`}</Text><Icon name="bell" size={30} color="#fff" />
-                    </TouchableOpacity>
-                  </View>
-                </View> */}
+                <TimerScreen thisState={this.state} onPress={this.stop} volumeAlert={this.state.volumeAlert} volumeSession={this.state.volumeSession} soundAlert={this.soundAlert} soundSession={this.soundSession}/>
               </>
             ) : (
               //TELA INICIAL
               <>
-                {/* <HomeScreen  /> */}
                 <View style={homeScreenStyles.container}>
-                  <StatusBar barStyle={"light-content"} />               
+                  <StatusBar barStyle={"light-content"} /> 
+
+                  {/* Colunas            */}
                   <View style={homeScreenStyles.cols}>
-                    
                     {/* Coluna da esquerda */}
                     <View style={homeScreenStyles.leftCol}>
                       <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
                       <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
-                      <VolumeSlider value={this.volumeAlert} onValueChange={this.setVolumeAlert}/>
+                      <VolumeSlider thisState={this.state} alert={true} sound={this.soundAlert}/>
                     </View>
                     {/* Colune da direita */}
                     <View style={homeScreenStyles.rightCol}>
                       <TimeInput thisState={this.state} label="Tempo total"/>
                       <SoundPicker label="Música" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
-                      <VolumeSlider value={this.volumeSession} onValueChange={this.setVolumeSession}/>
+                      <VolumeSlider thisState={this.state} sound={this.soundSession} />
                     </View>
                   </View>
 
-
                   {/* Botão de começar */}
                   <Button type={'start'} onPress={this.start} />
-
-
                 
                 </View>
               </>

@@ -16,7 +16,17 @@ const styles = StyleSheet.create({
 });
 
 
+
+
 const VolumeSlider = (props) =>{
+
+  function onChange(value){
+    if(props.sound){
+      props.sound.setVolumeAsync(parseFloat(value.toFixed(1)));
+    }  
+    props.alert==true ? props.thisState.volumeAlert = value : props.thisState.volumeSession = value;
+  }
+  
     return (
         <View style={styles.container}>
             {/* <Icon style={styles.label} name="volume-up" size={20} color="black" /> */}
@@ -25,8 +35,8 @@ const VolumeSlider = (props) =>{
             minimumValue={0}
             maximumValue={1}
             step={0.01}
-            value={props.value}
-            onValueChange={props.onValueChange}
+            value={ props.alert==true ? props.thisState.volumeAlert : props.thisState.volumeSession }
+            onValueChange={onChange}
             minimumTrackTintColor="#40cfff"
             thumbTintColor="#94e7ff"
             />

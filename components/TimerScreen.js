@@ -109,11 +109,11 @@ const TimerScreen = (props) =>{
         <View style={styles.volumeSlidersContainer}>
             <View style={styles.volumeSlider}>
                 <Icon name="bell" size={30} color="#40cfff" />     
-                <VolumeSlider value={props.volumeAlert[0]} onVolumeValueChange={props.volumeAlert[1]}/>
+                <VolumeSlider thisState={props.thisState} alert={true} sound={props.soundAlert} />
             </View>
             <View style={styles.volumeSlider}>
                 <Icon name="music" size={30} color="#40cfff" />
-                <VolumeSlider value={props.volumeSession[0]} onVolumeValueChange={props.volumeSession[1]}/> 
+                <VolumeSlider thisState={props.thisState}  sound={props.soundSession} />
             </View>
         </View>
     </View>
