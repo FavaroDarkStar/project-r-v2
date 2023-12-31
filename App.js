@@ -43,8 +43,6 @@ export default class App extends Component {
   interval = null
 
 
-  
-
   //Ao carregar compentente configura e setta os sons
   async setLoadSounds(){ 
     //Setta configurações do Audio
@@ -194,6 +192,33 @@ export default class App extends Component {
     }
   }
 
+  handleAlertTimeChange = text => {
+    if(text.length > 3 && text[3]>5){
+      let prevText = this.state.alertTime
+      this.setState({alertTime: text.slice(0,2)}, ()=> {
+        if(prevText== this.state.alertTime){
+          this.setState({alertTime: this.state.alertTime+':'})
+        }
+      }
+        );
+    }else{
+      this.setState({alertTime: text})
+    }
+  }
+  handleSessionTimeChange = text => {
+    if(text.length > 3 && text[3]>5){
+      let prevText = this.state.sessionTime
+      this.setState({sessionTime: text.slice(0,2)}, ()=> {
+        if(prevText== this.state.sessionTime){
+          this.setState({sessionTime: this.state.sessionTime+':'})
+        }
+      }
+        );
+    }else{
+      this.setState({sessionTime: text})
+    }
+  }
+
   render(){
     const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
                         { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];
@@ -219,14 +244,16 @@ export default class App extends Component {
                   <View style={homeScreenStyles.cols}>
                     {/* Coluna da esquerda */}
                     <View style={homeScreenStyles.leftCol}>
-                      <TimeInput thisState={this.state} label="Alertar a cada" type="alert"/>
+                      <Icon name="bell" size={50} color="#40cfff" />
+                      <TimeInput thisState={this.state} label="Alertar a cada" type="alert" onChangeText={this.handleAlertTimeChange} value={this.state.alertTime}/>
                       <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
                       <VolumeSlider thisState={this.state} alert={true} sound={this.soundAlert}/>
                     </View>
                     {/* Colune da direita */}
                     <View style={homeScreenStyles.rightCol}>
-                      <TimeInput thisState={this.state} label="Tempo total"/>
-                      <SoundPicker label="Música" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession}/>
+                      <Icon name="music" size={50} color="#40cfff" />
+                      <TimeInput thisState={this.state} label="Tempo total" onChangeText={this.handleSessionTimeChange} value={this.state.sessionTime}/>
+                      <SoundPicker label="Música" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession} />
                       <VolumeSlider thisState={this.state} sound={this.soundSession} />
                     </View>
                   </View>

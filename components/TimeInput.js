@@ -11,7 +11,7 @@ const screen = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container:{
-    
+    marginTop: 20
   },
   label: {
     textAlign: 'center',
@@ -54,12 +54,6 @@ const TimeInput = (props) =>{
   }
   state = props.thisState
 
-  handleAlertTimeChange = text => {
-      this.state.alertTime = text;
-  }
-  handleSessionTimeChange = text => {
-      this.state.sessionTime = text;
-  }
   return (
       <View style={styles.container}>
           <Text style={styles.label}>{props.label} (mm:ss)</Text>
@@ -69,8 +63,8 @@ const TimeInput = (props) =>{
               options={{
               format: 'HH:mm',
               }}
-              value={props.type === 'alert' ? this.state.alertTime : this.state.sessionTime}
-              onChangeText={props.type === 'alert' ? this.handleAlertTimeChange : this.handleSessionTimeChange}
+              value={props.value}
+              onChangeText={props.onChangeText}
           />
       </View>
   );

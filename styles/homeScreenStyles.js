@@ -14,7 +14,7 @@ const homeScreenStyles = StyleSheet.create({
     cols:{
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 80
+      marginBottom: 40
     },
     leftCol:{
       width: screen.width/2,

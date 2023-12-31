@@ -12,7 +12,7 @@ const screen = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container:{
-    paddingTop:40,
+    paddingTop:20,
 
   },
   label:{
