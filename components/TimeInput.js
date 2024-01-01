@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const TimeInput = (props) =>{
   let [fontsLoaded] = useFonts({
     'NunitoLight': require('../assets/fonts/Nunito-Light.ttf'),

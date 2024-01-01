@@ -1,7 +1,5 @@
-import React, { useState, setState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
-import homeScreenStyles from '../styles/homeScreenStyles';
+import React, { useState} from 'react';
+import { View, Text, StyleSheet, Dimensions} from 'react-native';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 
@@ -9,20 +7,15 @@ import RNPickerSelect from "react-native-picker-select";
 
 const screen = Dimensions.get("window");
 
-
 const styles = StyleSheet.create({
   container:{
     paddingTop:20,
-
   },
   label:{
     textAlign: 'center',
     fontSize: 25,
     fontFamily: 'NunitoBold',
     color: "#40cfff"
-  },
-  boxShadow: {
-
   }
 });
 
@@ -58,7 +51,6 @@ const pickerStyles = StyleSheet.create({
 
 const SoundPicker = (props) => {
   const [selectedOption, setSelectedOption] = useState( props.type == "alert" ? props.thisState.selectedAlertSongPath : props.thisState.selectedSessionSongPath);
-  const [selectedCustomSound, setSelectedCustomSound] = useState();
   const soundOptions = props.soundOptions;
 
   const handleOptionChange = (value) => {
@@ -74,10 +66,7 @@ const SoundPicker = (props) => {
     return null
   }
 
-
-
   return (
-    
     <View style={styles.container}>
       <Text style={styles.label}>{props.label}</Text>
         <RNPickerSelect

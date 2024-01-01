@@ -1,6 +1,5 @@
-import { View, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import React from "react";
-import { useFonts } from 'expo-font';
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const screen = Dimensions.get("window");

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useFonts } from 'expo-font';
@@ -75,22 +75,22 @@ const styles = StyleSheet.create({
 //retorna o numero formatado com duas casas
 function formatNumber(number) {
     return `0${number}`.slice(-2);
-  }
+}
   
 //retorna o tempo restante
 const getRemaining = time => {
-const minutes = Math.floor(time / 60);
-const seconds = time - minutes * 60;
-return `${formatNumber(minutes)}:${formatNumber(seconds)}`
+    const minutes = Math.floor(time / 60);
+    const seconds = time - minutes * 60;
+    return `${formatNumber(minutes)}:${formatNumber(seconds)}`
 }
 
 const TimerScreen = (props) =>{
     let [fontsLoaded] = useFonts({
         'NunitoLight': require('../assets/fonts/Nunito-Light.ttf'),
-      });
-      if (!fontsLoaded) {
+    });
+    if(!fontsLoaded) {
         return null
-      }
+    }
     return (
     <View style={styles.container}>
         <View style={styles.remainingSeconds}>

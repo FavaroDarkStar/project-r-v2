@@ -1,7 +1,6 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
 import React from "react";
 import Slider from '@react-native-community/slider';
-// import { useFonts } from 'expo-font';
 
 const screen = Dimensions.get("window");
 
@@ -15,9 +14,6 @@ const styles = StyleSheet.create({
 
 });
 
-
-
-
 const VolumeSlider = (props) =>{
 
   function onChange(value){
@@ -29,7 +25,6 @@ const VolumeSlider = (props) =>{
   
     return (
         <View style={styles.container}>
-            {/* <Icon style={styles.label} name="volume-up" size={20} color="black" /> */}
             <Slider
             style={styles.slider}
             minimumValue={0}
