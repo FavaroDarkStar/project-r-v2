@@ -219,6 +219,24 @@ export default class App extends Component {
     }
   }
 
+  handleBlurAlert = value =>{
+    if(this.state.alertTime.length < 5){
+      const newValue = this.state.alertTime.padEnd(5, '0');
+      const maskedValue = `${newValue.slice(0, 2)}:${newValue.slice(3)}`;
+      this.setState({alertTime: maskedValue})
+    }
+  }
+
+  handleBlurSession = value =>{
+    if(this.state.sessionTime.length < 5){
+      const newValue = this.state.sessionTime.padEnd(5, '0');
+      const maskedValue = `${newValue.slice(0, 2)}:${newValue.slice(3)}`;
+      this.setState({sessionTime: maskedValue})
+    }
+  }
+
+
+
   render(){
     const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
                         { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];
@@ -245,14 +263,14 @@ export default class App extends Component {
                     {/* Coluna da esquerda */}
                     <View style={homeScreenStyles.leftCol}>
                       <Icon name="bell" size={50} color="#40cfff" />
-                      <TimeInput thisState={this.state} label="Alertar a cada" type="alert" onChangeText={this.handleAlertTimeChange} value={this.state.alertTime}/>
+                      <TimeInput thisState={this.state} label="Alertar a cada" type="alert" onChangeText={this.handleAlertTimeChange} value={this.state.alertTime} onBlur={this.handleBlurAlert}/>
                       <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
                       <VolumeSlider thisState={this.state} alert={true} sound={this.soundAlert}/>
                     </View>
                     {/* Colune da direita */}
                     <View style={homeScreenStyles.rightCol}>
                       <Icon name="music" size={50} color="#40cfff" />
-                      <TimeInput thisState={this.state} label="Tempo total" onChangeText={this.handleSessionTimeChange} value={this.state.sessionTime}/>
+                      <TimeInput thisState={this.state} label="Tempo total" onChangeText={this.handleSessionTimeChange} value={this.state.sessionTime} onBlur={this.handleBlurSession}/>
                       <SoundPicker label="Música" thisState={this.state} soundOptions={sessionSoundOptions} sound={this.soundSession} />
                       <VolumeSlider thisState={this.state} sound={this.soundSession} />
                     </View>

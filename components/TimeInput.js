@@ -65,6 +65,7 @@ const TimeInput = (props) =>{
               }}
               value={props.value}
               onChangeText={props.onChangeText}
+              onBlur={props.onBlur}
           />
       </View>
   );

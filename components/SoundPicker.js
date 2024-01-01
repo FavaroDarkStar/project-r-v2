@@ -76,6 +76,7 @@ const SoundPicker = (props) => {
   }
 
 
+
   return (
     
     <View style={styles.container}>
@@ -88,8 +89,7 @@ const SoundPicker = (props) => {
           useNativeAndroidPickerStyle={false}
           Icon={() => {
             return <Icon name="caret-down" size={20} color="black" style={{marginTop: 5}}/>;
-          }}
-          placeholder={{  }} 
+          }} 
         />
       </View>
   );
