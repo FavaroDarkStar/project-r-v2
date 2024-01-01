@@ -6,9 +6,6 @@ import { useFonts } from 'expo-font';
 
 const screen = Dimensions.get("window");
 
-
-
-
 const styles = StyleSheet.create({
   container:{
     marginTop: 20
@@ -41,22 +38,19 @@ const styles = StyleSheet.create({
 });
 
 
-
-
 const TimeInput = (props) =>{
   let [fontsLoaded] = useFonts({
-    'NunitoMedium': require('../assets/fonts/Nunito-Medium.ttf'),
     'NunitoLight': require('../assets/fonts/Nunito-Light.ttf'),
     'NunitoBold': require('../assets/fonts/Nunito-Bold.ttf'),
   });
   if (!fontsLoaded) {
     return null
   }
-  state = props.thisState
 
   return (
       <View style={styles.container}>
-          <Text style={styles.label}>{props.label} (mm:ss)</Text>
+          <Text style={styles.label}>{props.label}</Text>
+          <Text style={styles.label}>(mm:ss)</Text>
           <TextInputMask 
               style={styles.textInputMask}
               type={'datetime'}

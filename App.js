@@ -1,19 +1,18 @@
-import { Text, View, TouchableOpacity, StatusBar } from 'react-native';
-import React, {Component, useState, useEffect} from "react";
+import { View, StatusBar } from 'react-native';
+import React, {Component} from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Audio } from 'expo-av';
-import styles from './styles';
+import styles from './styles/styles';
 import homeScreenStyles from './styles/homeScreenStyles';
-
-import timerScreenStyles from './styles/timerScreenStyles'
 
 import TimeInput from './components/TimeInput';
 import SoundPicker from './components/SoundPicker';
 import VolumeSlider from './components/VolumeSlider';
 import TimerScreen from './components/TimerScreen';
+import Button from './components/Button';
 
 import { useFonts } from 'expo-font';
-import Button from './components/Button';
+
 
 
 
@@ -25,9 +24,6 @@ function timeToSeconds(time) {
 
 
 export default class App extends Component {
-
-  
-
   state = {
     isRunning: false,
     alertTime: '01:30',
@@ -39,9 +35,7 @@ export default class App extends Component {
     volumeAlert: 1,
     volumeSession: 1
   }
-
   interval = null
-
 
   //Ao carregar compentente configura e setta os sons
   async setLoadSounds(){ 
@@ -120,6 +114,7 @@ export default class App extends Component {
     this.soundSession.setVolumeAsync(parseFloat(this.state.volumeSession.toFixed(1)));
     this.soundSession.playAsync();
   }
+
   //Função para parar o som da sessão
   stopSoundSession(){  
     this.soundSession.stopAsync();
@@ -146,6 +141,7 @@ export default class App extends Component {
       }));
     }, 1000);
   }
+
   //Função para parar a sessão
   stop = () => {
     let alertTimeToSeconds = timeToSeconds(this.state.alertTime); 
@@ -160,14 +156,6 @@ export default class App extends Component {
     this.stopSoundSession()
     this.stopSoundAlert()
   } 
-  //Função settar o volume do alerta
-  setVolumeAlert = async (value) => {
-    this.state.volumeAlert = value;
-  };
-  //Função settar o volume da sessao
-  setVolumeSession = async (value) => {
-    this.state.volumeSession = value;
-  };
   
   componentDidUpdate = (prevState) => {
     if(this.state.sessionRemainingSeconds === 0 && prevState.sessionRemainingSeconds !== 0){
@@ -181,16 +169,6 @@ export default class App extends Component {
     }
   }
 
-  
-  loadFonts() { 
-    let [fontsLoaded] = useFonts({
-      'NunitoMedium': require('./assets/fonts/Nunito-Medium.ttf'),
-      'NunitoBold': require('./assets/fonts/Nunito-Bold.ttf'),
-    });
-    if (!fontsLoaded) {
-      return null;
-    }
-  }
 
   handleAlertTimeChange = text => {
     if(text.length > 3 && text[3]>5){
@@ -205,6 +183,7 @@ export default class App extends Component {
       this.setState({alertTime: text})
     }
   }
+
   handleSessionTimeChange = text => {
     if(text.length > 3 && text[3]>5){
       let prevText = this.state.sessionTime
@@ -238,14 +217,12 @@ export default class App extends Component {
 
 
   render(){
-    const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' },
-                        { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];
+    const alertSoundOptions=[{ label: 'Alerta 1', value: 'alert1' }, { label: 'Alerta 2', value: 'alert2' }, { label: 'Alerta 3', value: 'alert3' }, { label: 'Alerta 4', value: 'alert4' }, { label: 'Alerta 5', value: 'alert5' },];     
     const sessionSoundOptions=[{ label: 'Som 1', value: 'song1' }, { label: 'Som 2', value: 'song2' }, { label: 'Som 3', value: 'song3' },];
 
     return (
  
         <View style={styles.container} >
-          
           {
             this.state.isRunning ? (
               //TELA DO CRONOMETRO
@@ -258,15 +235,17 @@ export default class App extends Component {
                 <View style={homeScreenStyles.container}>
                   <StatusBar barStyle={"light-content"} /> 
 
-                  {/* Colunas            */}
+                  {/* Colunas alerta e tempo total*/}
                   <View style={homeScreenStyles.cols}>
+
                     {/* Coluna da esquerda */}
                     <View style={homeScreenStyles.leftCol}>
                       <Icon name="bell" size={50} color="#40cfff" />
-                      <TimeInput thisState={this.state} label="Alertar a cada" type="alert" onChangeText={this.handleAlertTimeChange} value={this.state.alertTime} onBlur={this.handleBlurAlert}/>
+                      <TimeInput thisState={this.state} label="Alertar a cada" onChangeText={this.handleAlertTimeChange} value={this.state.alertTime} onBlur={this.handleBlurAlert}/>
                       <SoundPicker label="Som do alerta" thisState={this.state} soundOptions={alertSoundOptions} type='alert' sound={this.soundAlert} />
                       <VolumeSlider thisState={this.state} alert={true} sound={this.soundAlert}/>
                     </View>
+
                     {/* Colune da direita */}
                     <View style={homeScreenStyles.rightCol}>
                       <Icon name="music" size={50} color="#40cfff" />
@@ -277,8 +256,7 @@ export default class App extends Component {
                   </View>
 
                   {/* Botão de começar */}
-                  <Button type={'start'} onPress={this.start} />
-                
+                  <Button type={'start'} onPress={this.start} />                
                 </View>
               </>
             )

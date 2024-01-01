@@ -67,7 +67,6 @@ const SoundPicker = (props) => {
   };
 
   let [fontsLoaded] = useFonts({
-    'NunitoMedium': require('../assets/fonts/Nunito-Medium.ttf'),
     'NunitoLight': require('../assets/fonts/Nunito-Light.ttf'),
     'NunitoBold': require('../assets/fonts/Nunito-Bold.ttf'),
   });
